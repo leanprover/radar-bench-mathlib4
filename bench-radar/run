@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+echo "Running benchmark: build"
 scripts/bench-radar/build/run
+
+echo "Running benchmark: lint"
 scripts/bench-radar/lint/run
+
+echo "Running benchmark: open-mathlib"
 scripts/bench-radar/open-mathlib/run
+
+echo "Running benchmark: size"
 scripts/bench-radar/size/run
