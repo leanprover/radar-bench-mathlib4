@@ -4,7 +4,7 @@ set -euo pipefail
 src="$(pwd)"
 cd "$1"
 
-rm -rf ~/.elan/{toolchains,update-hashes}
+rm -rf ~/.elan/toolchains/*
 lean --version # install and sanity check
 
 if [ -d "scripts/bench-radar" ]; then
