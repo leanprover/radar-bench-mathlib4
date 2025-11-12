@@ -21,8 +21,15 @@ def run(*command: str) -> None:
 
 def run_stderr(*command: str) -> str:
     result = subprocess.run(command, check=True, capture_output=True, encoding="utf-8")
-    print(result.stdout, end="")
-    print(result.stderr, end="", file=sys.stderr)
+
+    # Reduce log size
+    for line in result.stdout.splitlines():
+        if "radar::measurement=" in line:
+            print(line)
+    for line in result.stderr.splitlines():
+        if "radar::measurement=" in line:
+            print(line, file=sys.stderr)
+
     return result.stderr
 
 
