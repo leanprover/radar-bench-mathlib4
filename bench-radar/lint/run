@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+LEAN_ABORT_ON_PANIC=1 scripts/bench-radar/measure.py -t lint \
+  -m instructions -m maxrss -m task-clock -m wall-clock -- \
+  lake exe runLinter Mathlib

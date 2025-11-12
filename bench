@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+src="$(pwd)"
+cd "$1"
+
+rm -rf ~/.elan/{toolchains,update-hashes}
+lean --version # install and sanity check
+
+if [ -d "scripts/bench-radar" ]; then
+  echo Using the bench-radar suite
+  timeout -s KILL 4h scripts/bench-radar/run
+elif [ -d "scripts/bench" ] && [ -f "scripts/bench/README.md" ]; then
+  echo Using the bench suite
+  timeout -s KILL 4h scripts/bench/run
+else
+  echo Bringing my own copy of the bench-radar suite
+  cp -r "$src/bench-radar" scripts/bench-radar
+  timeout -s KILL 4h scripts/bench-radar/run
+fi

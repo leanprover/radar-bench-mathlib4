@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+scripts/bench-radar/build/run
+scripts/bench-radar/lint/run
+scripts/bench-radar/open-mathlib/run
+scripts/bench-radar/size/run
