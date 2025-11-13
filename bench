@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-src="$(pwd)"
-cd "$1"
+BENCH="$PWD"
+REPO="$1"
+OUT="$2"
+
+cd "$REPO"
 
 rm -rf ~/.elan/toolchains/*
 lean --version # install and sanity check
@@ -15,8 +18,8 @@ elif [ -d "scripts/bench" ] && [ -f "scripts/bench/README.md" ]; then
   timeout -s KILL 4h scripts/bench/run
 else
   echo Bringing my own copy of the bench-radar suite
-  cp -r "$src/bench-radar" scripts/bench-radar
+  cp -r "$BENCH/bench-radar" scripts/bench-radar
   timeout -s KILL 4h scripts/bench-radar/run
 fi
 
-mv radar.jsonl "$2"
+mv radar.jsonl "$OUT"
