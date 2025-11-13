@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import json
-import re
 from pathlib import Path
 
 
@@ -15,17 +14,12 @@ def print_result(metric: str, value: float, unit: str | None = None) -> None:
 def measure_leans() -> None:
     lean_files = 0
     lean_lines = 0
-    porting_notes = 0
     for path in Path().glob("Mathlib/**/*.lean"):
         lean_files += 1
         with open(path) as f:
-            for line in f:
-                lean_lines += 1
-                if re.match("porting notes", line, re.IGNORECASE):
-                    porting_notes += 1
+            lean_lines += sum(1 for _ in f)
     print_result("size/.lean//files", lean_files)
     print_result("size/.lean//lines", lean_lines)
-    print_result("size/.lean//porting-notes", porting_notes)
 
 
 def measure_oleans() -> None:
