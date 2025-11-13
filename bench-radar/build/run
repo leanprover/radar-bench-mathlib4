@@ -8,4 +8,4 @@ LEAN_PATH=$(lean --print-libdir) lake build proofwidgets
 rm -f .lake/packages/batteries/.lake/build/bin/runLinter
 
 # Run build
-LAKE_OVERRIDE_LEAN=true LEAN=$(realpath scripts/bench-radar/build/fake-root/bin/lean) lakeprof record lake build --no-cache -v
+LAKE_OVERRIDE_LEAN=true LEAN=$(realpath scripts/bench-radar/build/fake-root/bin/lean) lakeprof record lake build --no-cache

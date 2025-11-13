@@ -8,11 +8,12 @@ import sys
 from pathlib import Path
 
 
-def print_result(metric: str, value: float, unit: str | None = None) -> None:
+def save_result(metric: str, value: float, unit: str | None = None) -> None:
     data = {"metric": metric, "value": value}
     if unit is not None:
         data["unit"] = unit
-    print(f"radar::measurement={json.dumps(data)}")
+    with open("radar.jsonl", "a+") as f:
+        f.write(f"{json.dumps(data)}\n")
 
 
 def run(*command: str) -> None:
@@ -21,15 +22,6 @@ def run(*command: str) -> None:
 
 def run_stderr(*command: str) -> str:
     result = subprocess.run(command, check=True, capture_output=True, encoding="utf-8")
-
-    # Reduce log size
-    for line in result.stdout.splitlines():
-        if "radar::measurement=" in line:
-            print(line)
-    for line in result.stderr.splitlines():
-        if "radar::measurement=" in line:
-            print(line, file=sys.stderr)
-
     return result.stderr
 
 
@@ -41,7 +33,7 @@ def get_module(setup: Path) -> str:
 def count_lines(module: str, path: Path) -> None:
     with open(path) as f:
         lines = sum(1 for _ in f)
-    print_result(f"build/module/{module}//lines", lines)
+    save_result(f"build/module/{module}//lines", lines)
 
 
 def run_lean(module: str) -> None:
@@ -62,7 +54,7 @@ def run_lean(module: str) -> None:
             seconds = float(match.group(2))
             if match.group(3) == "ms":
                 seconds = seconds / 1000
-            print_result(f"build/profile/{name}//wall-clock", seconds, "s")
+            save_result(f"build/profile/{name}//wall-clock", seconds, "s")
 
 
 def main() -> None:

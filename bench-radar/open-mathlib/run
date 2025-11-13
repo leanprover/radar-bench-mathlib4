@@ -3,5 +3,4 @@ set -eo pipefail
 
 scripts/bench-radar/measure.py -t open-mathlib \
   -m instructions -m maxrss -m task-clock -m wall-clock -- \
-  lake lean Mathlib.lean \
-  2> /dev/null # silence "Replayed ..." messages
+  lake lean Mathlib.lean

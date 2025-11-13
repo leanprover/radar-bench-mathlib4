@@ -18,3 +18,5 @@ else
   cp -r "$src/bench-radar" scripts/bench-radar
   timeout -s KILL 4h scripts/bench-radar/run
 fi
+
+mv radar.jsonl "$2"
