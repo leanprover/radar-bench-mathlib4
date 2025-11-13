@@ -8,4 +8,7 @@ LEAN_PATH=$(lean --print-libdir) lake build proofwidgets
 rm -f .lake/packages/batteries/.lake/build/bin/runLinter
 
 # Run build
-LAKE_OVERRIDE_LEAN=true LEAN=$(realpath scripts/bench-radar/build/fake-root/bin/lean) lakeprof record lake build --no-cache
+LAKE_OVERRIDE_LEAN=true LEAN=$(realpath scripts/bench-radar/build/fake-root/bin/lean) \
+  scripts/bench-radar/measure.py -t build \
+  -m instructions -m maxrss -m task-clock -m wall-clock -- \
+  lakeprof record lake build --no-cache

@@ -8,11 +8,14 @@ import sys
 from pathlib import Path
 
 
+OUTPUT_FILE = "radar.jsonl"
+
+
 def save_result(metric: str, value: float, unit: str | None = None) -> None:
     data = {"metric": metric, "value": value}
     if unit is not None:
         data["unit"] = unit
-    with open("radar.jsonl", "a+") as f:
+    with open(OUTPUT_FILE, "a+") as f:
         f.write(f"{json.dumps(data)}\n")
 
 
@@ -40,6 +43,7 @@ def run_lean(module: str) -> None:
     stderr = run_stderr(
         "scripts/bench-radar/measure.py",
         *("-t", f"build/module/{module}"),
+        *("-o", OUTPUT_FILE),
         *("-m", "instructions"),
         "--",
         *("lean", "--profile", "-Dprofiler.threshold=10000"),

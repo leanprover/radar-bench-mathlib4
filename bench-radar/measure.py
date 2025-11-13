@@ -8,13 +8,7 @@ import subprocess
 import sys
 import tempfile
 from dataclasses import dataclass
-
-
-def print_result(metric: str, value: float, unit: str | None = None) -> None:
-    data = {"metric": metric, "value": value}
-    if unit is not None:
-        data["unit"] = unit
-    print(f"radar::measurement={json.dumps(data)}")
+from pathlib import Path
 
 
 @dataclass
@@ -69,9 +63,15 @@ def measure_perf(cmd: list[str], events: list[str]) -> dict[str, float]:
 
 @dataclass
 class Result:
-    metric: str
+    category: str
     value: float
     unit: str | None
+
+    def fmt(self, topic: str) -> str:
+        metric = f"{topic}//{self.category}"
+        if self.unit is None:
+            return json.dumps({"metric": metric, "value": self.value})
+        return json.dumps({"metric": metric, "value": self.value, "unit": self.unit})
 
 
 def measure(cmd: list[str], metrics: list[str]) -> list[Result]:
@@ -112,16 +112,27 @@ def measure(cmd: list[str], metrics: list[str]) -> list[Result]:
     return results
 
 
-def main(topics: list[str], metrics: list[str], cmd: list[str]):
-    for result in measure(cmd, metrics):
-        for topic in topics:
-            print_result(f"{topic}//{result.metric}", result.value, result.unit)
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-t", "--topic", action="append", default=[])
     parser.add_argument("-m", "--metric", action="append", default=[])
+    parser.add_argument("-o", "--output", type=Path)
     parser.add_argument("cmd", nargs="*")
     args = parser.parse_args()
-    main(args.topic, args.metric, args.cmd)
+
+    topics: list[str] = args.topic
+    metrics: list[str] = args.metric
+    output: Path | None = args.output
+    cmd: list[str] = args.cmd
+
+    results = measure(cmd, metrics)
+
+    if output:
+        with open(output, "a+") as f:
+            for result in results:
+                for topic in topics:
+                    f.write(f"{result.fmt(topic)}\n")
+    else:
+        for result in results:
+            for topic in topics:
+                print(f"radar::measurement={result.fmt(topic)}")
