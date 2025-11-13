@@ -58,6 +58,7 @@ It measures the following metrics:
 
 This benchmark measures a few deterministic values.
 
+- `size/.lean//files`
 - `size/.lean//lines`
+- `size/.olean//files`
 - `size/.olean//bytes`
-- `size/porting notes//lines`
