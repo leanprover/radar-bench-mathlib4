@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eo pipefail
+set -euxo pipefail
 
 # Prepare build
 # Use build cache for proofwidgets, but not for anything else.

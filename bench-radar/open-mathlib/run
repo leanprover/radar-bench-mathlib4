@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eo pipefail
+set -euxo pipefail
 
 scripts/bench-radar/measure.py -t open-mathlib \
   -m instructions -m maxrss -m task-clock -m wall-clock -- \
