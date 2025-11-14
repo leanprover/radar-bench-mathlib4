@@ -37,7 +37,7 @@ PERF_UNITS = {
 }
 
 RUSAGE_METRICS = {
-    "maxrss": RusageMetric("ru_maxrss", factor=1000, unit="b"),  # KiB on linux
+    "maxrss": RusageMetric("ru_maxrss", factor=1000, unit="B"),  # KiB on linux
 }
 
 

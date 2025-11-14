@@ -29,7 +29,7 @@ def measure_oleans() -> None:
         olean_files += 1
         olean_bytes += path.stat().st_size
     print_result("size/.olean//files", olean_files)
-    print_result("size/.olean//lines", olean_bytes, "b")
+    print_result("size/.olean//bytes", olean_bytes, "B")
 
 
 if __name__ == "__main__":
