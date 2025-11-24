@@ -6,8 +6,6 @@ REPO="$1"
 OUT="$2"
 
 cd "$REPO"
-
-rm -rf ~/.elan/toolchains/*
 lean --version # install and sanity check
 
 if [ -d "scripts/bench-radar" ]; then
