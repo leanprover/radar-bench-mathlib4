@@ -7,6 +7,7 @@ OUT="$2"
 
 cd "$REPO"
 lean --version # install and sanity check
+touch build_upload_lakeprof_report
 
 if [ -d "scripts/bench-radar" ]; then
   echo Using the bench-radar suite
